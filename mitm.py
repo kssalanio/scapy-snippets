@@ -109,21 +109,21 @@ class PacketSniffer(threading.Thread):
         return self.stop_sniffer.isSet()
         
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument("if_in")
-	parser.add_argument("if_out")
-	parser.add_argument("proto")
-	cli_args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("if_in")
+    parser.add_argument("if_out")
+    parser.add_argument("proto")
+    cli_args = parser.parse_args()
     sniffer = sniffer.PacketSniffer(cli_args.if_in, cli_args.if_out, app_protocol=cli_args.proto)
     self.sniffer.start()
-	print ("Sniffer started")
-	try:
-		while True:
-			time.sleep(500)
-	except KeyboardInterrupt:
-		print("[*] Stop sniffing")
+    print ("Sniffer started")
+    try:
+        while True:
+            time.sleep(500)
+    except KeyboardInterrupt:
+        print("[*] Stop sniffing")
 
-		self.sniffer.join(timeout=2.0)
+        self.sniffer.join(timeout=2.0)
 
-		if self.sniffer.isAlive():
-			self.sniffer.socket.close()
+        if self.sniffer.isAlive():
+            self.sniffer.socket.close()
