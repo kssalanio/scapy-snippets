@@ -112,7 +112,7 @@ if __name__ == '__main__':
     parser.add_argument("proto")
     cli_args = parser.parse_args()
     sniffer = PacketSniffer(cli_args.if_in, cli_args.if_out, app_protocol=cli_args.proto)
-    self.sniffer.start()
+    sniffer.start()
     print ("Sniffer started")
     try:
         while True:
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("[*] Stop sniffing")
 
-        self.sniffer.join(timeout=2.0)
+        sniffer.join(timeout=2.0)
 
-        if self.sniffer.isAlive():
-            self.sniffer.socket.close()
+        if sniffer.isAlive():
+            sniffer.socket.close()
