@@ -2,7 +2,6 @@ import argparse
 from scapy.all import *
 from threading import Thread, Event
 from time import sleep
-import utils
 from sortedcontainers import SortedList, SortedDict
 from pprint import pprint
 
