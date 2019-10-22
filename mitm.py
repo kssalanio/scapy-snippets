@@ -98,7 +98,7 @@ class PacketSniffer(threading.Thread):
         self.stop_sniffer.set()
         super(PacketSniffer, self).join(timeout)
 
-    def should_stop_sniffer(self):
+    def should_stop_sniffer(self, extra_args=None):
         """
         Stops the sniffer when the internal variable is set
         :return: True if stop_sniffer is set, False otherwise
