@@ -112,7 +112,7 @@ if __name__ == '__main__':
     parser.add_argument("if_out")
     parser.add_argument("proto")
     cli_args = parser.parse_args()
-    sniffer = sniffer.PacketSniffer(cli_args.if_in, cli_args.if_out, app_protocol=cli_args.proto)
+    sniffer = PacketSniffer(cli_args.if_in, cli_args.if_out, app_protocol=cli_args.proto)
     self.sniffer.start()
     print ("Sniffer started")
     try:
