@@ -58,6 +58,7 @@ class PacketSniffer(threading.Thread):
             print(pkt.summary())
             
             # TODO: forward to exit (virtual) interface
+            sendp(pkt, iface=self.if_out)
 
 
     def print_packet(self, pkt):
