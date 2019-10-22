@@ -23,7 +23,6 @@ class PacketSniffer(threading.Thread):
         self.packet_filter_string = app_protocol
         self.if_in = if_in
         self.if_out = if_out
-        self.callback_object = callback_object
 
     def is_not_outgoing(self, pkt):
         """
