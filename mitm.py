@@ -77,7 +77,7 @@ class PacketSniffer(threading.Thread):
         """
         Starts the socket and Scapy sniffer
         """
-        print "Starting Packet Sniffer on [ %s ]=>[ %s ]:[ %s ]..." % (self.if_in, self.if_out, self.packet_filter_string)
+        print("Starting Packet Sniffer on [ %s ]=>[ %s ]:[ %s ]..." % (self.if_in, self.if_out, self.packet_filter_string))
         self.socket = conf.L2listen(
             type=ETH_P_ALL,
             iface=self.if_in,
