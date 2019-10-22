@@ -1,3 +1,4 @@
+import argparse
 from scapy.all import *
 from threading import Thread, Event
 from time import sleep
@@ -14,7 +15,7 @@ class PacketSniffer(threading.Thread):
     Packet Sniffer Object using Scapy
     """
 
-    def __init__(self, ifname, callback_object, app_protocol="tcp"):
+    def __init__(self, if_in, if_out, app_protocol="tcp"):
         super(PacketSniffer, self).__init__()
 
         self.daemon = True
@@ -22,7 +23,8 @@ class PacketSniffer(threading.Thread):
         self.socket = None
         self.stop_sniffer = Event()
         self.packet_filter_string = app_protocol
-        self.ifname = config.get("network", "ifname")
+        self.if_in = if_in
+        self.if_out = if_out
         self.callback_object = callback_object
 
     def is_not_outgoing(self, pkt):
@@ -75,10 +77,10 @@ class PacketSniffer(threading.Thread):
         """
         Starts the socket and Scapy sniffer
         """
-        print "Starting Packet Sniffer on [ %s ]:[ %s ]..." % (self.ifname, self.packet_filter_string)
+        print "Starting Packet Sniffer on [ %s ]=>[ %s ]:[ %s ]..." % (self.if_in, self.if_out, self.packet_filter_string)
         self.socket = conf.L2listen(
             type=ETH_P_ALL,
-            iface=self.ifname,
+            iface=self.if_in,
             filter=self.packet_filter_string
         )
 
@@ -107,9 +109,12 @@ class PacketSniffer(threading.Thread):
         return self.stop_sniffer.isSet()
         
 if __name__ == '__main__':
-    config = ConfigParser.ConfigParser()
-    config.read('config.ini')
-    sniffer = sniffer.PacketSniffer(config, self, app_protocol="tcp")
+	parser = argparse.ArgumentParser()
+	parser.add_argument("if_in")
+	parser.add_argument("if_out")
+	parser.add_argument("proto")
+	cli_args = parser.parse_args()
+    sniffer = sniffer.PacketSniffer(cli_args.if_in, cli_args.if_out, app_protocol=cli_args.proto)
     self.sniffer.start()
 	print ("Sniffer started")
 	try:
