@@ -24,20 +24,20 @@ class PacketSniffer(threading.Thread):
         self.if_in = if_in
         self.if_out = if_out
 
-    def is_not_outgoing(self, pkt):
+    def is_ingoing(self, pkt):
         """
-        Filter for ingoing packets
+        Filter for ingoing packets by comparing dst mac address to device address
         :param pkt: Scapy packet object instance
         :return: False if it is an outgoing packet, True otherwise
         """
         try:
-            return pkt[Ether].src.lower() != get_if_hwaddr(conf.iface).lower()
+            return pkt[Ether].dst.lower() == get_if_hwaddr(conf.iface).lower()
         except IndexError:
             return False
 
     def is_outgoing(self, pkt):
         """
-        Filter for outgoing packets
+        Filter for outgoing packets by comparing src mac address to device address
         :param pkt: Scapy packet object instance
         :return: True if it is an outgoing packet, False otherwise
         """
@@ -85,7 +85,7 @@ class PacketSniffer(threading.Thread):
         sniff(
             opened_socket=self.socket,
             #filter=self.packet_filter_string,
-            lfilter=self.is_not_outgoing,
+            lfilter=self.is_ingoing,
             # prn=self.print_packet,
             prn=self.sniffer_callback,
             stop_filter=self.should_stop_sniffer
